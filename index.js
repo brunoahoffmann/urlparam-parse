@@ -1,3 +1,4 @@
-import urlParamParse from './src/urlparam-parse.js';
+'use strict';
 
+urlParamParse = require('./src/urlparam-parse');
 module.exports = urlParamParse;
