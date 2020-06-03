@@ -1,0 +1,20 @@
+{
+  "name": "urlparam-parse",
+  "version": "1.0.0",
+  "description": "Parse URL params and change your HTML code using a simple pattern [urlparam param='src' default=''].",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brunoahoffmann/urlparam-parse.git"
+  },
+  "keywords": [],
+  "author": "Bruno A. Hoffmann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brunoahoffmann/urlparam-parse/issues"
+  },
+  "homepage": "https://github.com/brunoahoffmann/urlparam-parse#readme"
+}

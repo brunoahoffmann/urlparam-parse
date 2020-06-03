@@ -67,4 +67,5 @@ urlParamParse = {
         return urlParams.has(paramValue)? urlParams.get(paramValue): paramDefault;
     }
 };
-urlParamParse.parse((document.currentScript.getAttribute('timeout') || 100));
+
+module.exports = urlParamParse;
