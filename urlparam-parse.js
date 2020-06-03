@@ -7,7 +7,7 @@
  * @author Bruno A. Hoffmann
  */
 urlParamParse = {
-    regexPattern : /\[urlparam ?[^\]]+\]/ig,
+    regexPattern : /\[urlparam[\ ]?[^\]]+\]/ig,
     regexParam   : /.*(param([ =])+["]([^\"]+)?["]|param([ =])+[']([^\']+)?[']).*/ig,
     regexDefault : /.*(default([ =])+["]([^\"]+)?["]|default([ =])+[']([^\']+)?[']).*/ig,
 
@@ -37,7 +37,7 @@ urlParamParse = {
                     }
                 }
 
-                if(/(p|span|iframe)/i.test(element.tagName) === true){
+                if(/(p|span|h1|h2|h3|h4|h5|h6)/i.test(element.tagName) === true){
                     element.innerHTML = element.innerHTML.replace(urlParamParse.regexPattern, (match) => {
                         let p = urlParamParse.paramValue(match);
                         return p
