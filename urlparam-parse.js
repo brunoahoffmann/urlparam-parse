@@ -6,13 +6,15 @@
  * 
  * @author Bruno A. Hoffmann
  */
-var urlParamParse = {
-    parse: function() {
-        let bodyHtml = document.body;
-        document.body.innerHTML = bodyHtml.innerHTML.replace(/\[urlparam [^\]]+\]/ig, (match) => {
-            let p = this.paramValue(match);
-            return p
-        });
+urlParamParse = {
+    parse: function(startTimeout) {
+        setTimeout(function(){
+            let bodyHtml = document.body;
+            document.body.innerHTML = bodyHtml.innerHTML.replace(/\[urlparam [^\]]+\]/ig, (match) => {
+                let p = urlParamParse.paramValue(match);
+                return p
+            });
+        }, startTimeout);
     },
 
     paramValue: (match) => {
@@ -35,4 +37,4 @@ var urlParamParse = {
         return urlParams.has(paramValue)? urlParams.get(paramValue): paramDefault;
     }
 }
-urlParamParse.parse();
+urlParamParse.parse((document.currentScript.getAttribute('timeout') || 500));
