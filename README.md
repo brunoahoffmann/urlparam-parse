@@ -17,4 +17,4 @@
         <a href="http://url_link/?src=[urlparam param='src' default='']">
 
         - setting timeout when embed script
-        <script src="urlparam-parse.js" timeout="1000"></script>
+        <script src="urlparam-parse-embed.js" timeout="1000"></script>
