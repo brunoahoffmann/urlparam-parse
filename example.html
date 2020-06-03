@@ -9,13 +9,13 @@
         <p>([urlparam param='src' default='']) - url param 'src' width default blank</p>
         <p>([urlparam param='tag' default='ABC']) - url param 'tag' with default 'ABC'</p>
         <p>([urlparam param='redir']) - url param 'redir' without default defined</p>
-
-        <form action="http://url_form/?src=[urlparam param='src' default='']"> - url param 'src' into form action URL
+        <p>([urlparamparam='src'default='']) - url param 'src' without spaces</p>
 
         <input type="text" value="[urlparam param='src' default='']" /> - url param 'src' into input text
-
-        <a href="http://url_link/?src=[urlparam param='src' default='']"> - url param 'src' into link href 
-
+        <br />
+        <br />
+        <a href="http://url_link/?src=[urlparam param='src' default='']">link text</a> - url param 'src' into link href 
+        
         <script src="urlparam-parse.js" timeout="1000"></script>
     </body>
 </html>

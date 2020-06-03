@@ -7,7 +7,7 @@
  * @author Bruno A. Hoffmann
  */
 urlParamParse = {
-    regexPattern : /\[urlparam [^\]]+\]/ig,
+    regexPattern : /\[urlparam ?[^\]]+\]/ig,
     regexParam   : /.*(param([ =])+["]([^\"]+)?["]|param([ =])+[']([^\']+)?[']).*/ig,
     regexDefault : /.*(default([ =])+["]([^\"]+)?["]|default([ =])+[']([^\']+)?[']).*/ig,
 
@@ -35,6 +35,13 @@ urlParamParse = {
                             }
                         }
                     }
+                }
+
+                if(/(p|span|iframe)/i.test(element.tagName) === true){
+                    element.innerHTML = element.innerHTML.replace(urlParamParse.regexPattern, (match) => {
+                        let p = urlParamParse.paramValue(match);
+                        return p
+                    });
                 }
             });
         }, startTimeout);
