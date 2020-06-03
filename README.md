@@ -5,3 +5,4 @@
         [urlparam param='src' default=''] - url param 'src' width default blank
         [urlparam param='tag' default='ABC'] - url param 'tag' with default 'ABC'
         [urlparam param='redir'] - url param 'redir' without default defined
+        <input type="text" value="[urlparam param='src' default='']" /> - url param 'src' into input text
