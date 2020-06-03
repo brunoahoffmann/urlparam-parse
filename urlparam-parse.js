@@ -7,19 +7,42 @@
  * @author Bruno A. Hoffmann
  */
 urlParamParse = {
+    regexPattern : /\[urlparam [^\]]+\]/ig,
+    regexParam   : /.*(param([ =])+["]([^\"]+)?["]|param([ =])+[']([^\']+)?[']).*/ig,
+    regexDefault : /.*(default([ =])+["]([^\"]+)?["]|default([ =])+[']([^\']+)?[']).*/ig,
+
     parse: function(startTimeout) {
         setTimeout(function(){
-            let bodyHtml = document.body;
-            document.body.innerHTML = bodyHtml.innerHTML.replace(/\[urlparam [^\]]+\]/ig, (match) => {
-                let p = urlParamParse.paramValue(match);
-                return p
+            // parse forms input
+            document.querySelectorAll('body input').forEach((match) => { 
+                if(urlParamParse.regexPattern.test(match.value)){
+                    match.value = urlParamParse.paramValue(match.value);
+                }
+            });
+            
+            // parse all html elements attributes
+            document.querySelectorAll('body *').forEach((element) => { 
+                if(/(script|input)/i.test(element.tagName) === false){
+                    for(let idx=0;idx < element.attributes.length; idx++){
+                        if(element.attributes.item(idx)){
+                            let attr = element.attributes.item(idx).name;
+                            if(urlParamParse.regexPattern.test(element.getAttribute(attr))){
+                                let valueParsed = element.getAttribute(attr).replace(urlParamParse.regexPattern, (match) => {
+                                    let p = urlParamParse.paramValue(match);
+                                    return p
+                                });
+                                element.setAttribute(attr, valueParsed);
+                            }
+                        }
+                    }
+                }
             });
         }, startTimeout);
     },
 
     paramValue: (match) => {
-        let regexParam   = /.*(param([ =])+["]([^\"]+)?["]|param([ =])+[']([^\']+)?[']).*/ig;
-        let regexDefault = /.*(default([ =])+["]([^\"]+)?["]|default([ =])+[']([^\']+)?[']).*/ig;
+        let regexParam   = urlParamParse.regexParam;
+        let regexDefault = urlParamParse.regexDefault;
 
         let paramValue   = match.replace(regexParam, '$3') || match.replace(regexParam, '$5');
         let paramDefault = match.replace(regexDefault, '$3') || match.replace(regexDefault, '$5');
@@ -36,5 +59,5 @@ urlParamParse = {
 
         return urlParams.has(paramValue)? urlParams.get(paramValue): paramDefault;
     }
-}
-urlParamParse.parse((document.currentScript.getAttribute('timeout') || 500));
+};
+urlParamParse.parse((document.currentScript.getAttribute('timeout') || 100));
