@@ -44,6 +44,22 @@ urlParamParse = {
                     });
                 }
             });
+
+            // parse all head elements attributes
+            document.querySelectorAll('head *').forEach((element) => { 
+                for(let idx=0;idx < element.attributes.length; idx++){
+                    if(element.attributes.item(idx)){
+                        let attr = element.attributes.item(idx).name;
+                        if(urlParamParse.regexPattern.test(element.getAttribute(attr))){
+                            let valueParsed = element.getAttribute(attr).replace(urlParamParse.regexPattern, (match) => {
+                                let p = urlParamParse.paramValue(match);
+                                return p
+                            });
+                            element.setAttribute(attr, valueParsed);
+                        }
+                    }
+                }
+            });
         }, startTimeout);
     },
 
