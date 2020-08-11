@@ -38,6 +38,8 @@ urlParamParse = {
 
                                 // hack to Vue link
                                 if(/(a)/i.test(element.tagName) === true){
+                                    element.classList.add('ovewrite-click');
+
                                     let linkSpanList = element.getElementsByTagName('span');
                                     for(let sd=0;sd < linkSpanList.length; sd++){
                                         if(linkSpanList.item(idx)){

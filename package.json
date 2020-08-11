@@ -1,6 +1,6 @@
 {
   "name": "urlparam-parse",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Parse URL params and change your HTML code using a simple pattern [urlparam param='src' default=''].",
   "main": "index.js",
   "scripts": {
