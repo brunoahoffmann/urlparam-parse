@@ -35,6 +35,17 @@ urlParamParse = {
                                     return p
                                 });
                                 element.setAttribute(attr, valueParsed);
+
+                                // hack to Vue link
+                                if(/(a)/i.test(element.tagName) === true){
+                                    let linkSpanList = element.getElementsByTagName('span');
+                                    for(let sd=0;sd < linkSpanList.length; sd++){
+                                        if(linkSpanList.item(idx)){
+                                            let linkSpan = linkSpanList.item(idx);
+                                            linkSpan.classList.add('ovewrite-click');
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
