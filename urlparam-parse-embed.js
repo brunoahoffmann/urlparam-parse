@@ -17,11 +17,13 @@ urlParamParse = {
     parse: function(startTimeout) {
         setTimeout(function(){
             // parse forms input
-            document.querySelectorAll('body input').forEach((match) => { 
-                if(urlParamParse.regexPattern.test(match.value)){
-                    match.value = urlParamParse.paramValue(match.value);
-                }
-            });
+            for(let ic = 1; ic <= 5; ic++){ // fix cause JS for some reason lost pattern expression
+                document.querySelectorAll('body input').forEach((match) => { 
+                    if(urlParamParse.regexPattern.test(match.value)){
+                        match.value = urlParamParse.paramValue(match.value);
+                    }
+                });
+            }
             
             // parse all html elements attributes
             document.querySelectorAll('body *').forEach((element) => { 
