@@ -6,63 +6,38 @@
  * 
  * @author Bruno A. Hoffmann
  */
-urlParamParse = {
+ urlParamParse = {
     regexPattern : /\[urlparam[\ ]?[^\]]+\]/ig,
     regexParam   : /.*(param([ =])+["]([^\"]+)?["]|param([ =])+[']([^\']+)?[']).*/ig,
     regexDefault : /.*(default([ =])+["]([^\"]+)?["]|default([ =])+[']([^\']+)?[']).*/ig,
 
+    intervalParse: null,
+
     parse: function(startTimeout) {
         setTimeout(function(){
-            // parse forms input
-            for(let ic = 1; ic <= 5; ic++){ // fix cause JS for some reason lost pattern expression
-                document.querySelectorAll('body input').forEach((match) => { 
-                    if(urlParamParse.regexPattern.test(match.value)){
-                        match.value = urlParamParse.paramValue(match.value);
-                    }
-                });
-            }
-            
-            // parse all html elements attributes
-            document.querySelectorAll('body *').forEach((element) => { 
-                if(/(script|input)/i.test(element.tagName) === false){
-                    for(let idx=0;idx < element.attributes.length; idx++){
-                        if(element.attributes.item(idx)){
-                            let attr = element.attributes.item(idx).name;
-                            if(urlParamParse.regexPattern.test(element.getAttribute(attr))){
-                                let valueParsed = element.getAttribute(attr).replace(urlParamParse.regexPattern, (match) => {
-                                    let p = urlParamParse.paramValue(match);
-                                    return p
-                                });
-                                element.setAttribute(attr, valueParsed);
+            urlParamParse.intervalParse = setInterval(function() {
+                urlParamParse.executeParse()
+            }, 100);
+        }, startTimeout);
 
-                                // hack to Vue link
-                                if(/(a)/i.test(element.tagName) === true){
-                                    element.classList.add('overwrite-click');
-                                    setTimeout(function() {
-                                        let linkSpanList = element.getElementsByTagName('span');
-                                        for(let sd=0;sd < linkSpanList.length; sd++){
-                                            if(linkSpanList.item(idx)){
-                                                let linkSpan = linkSpanList.item(idx);
-                                                linkSpan.classList.add('overwrite-click');
-                                            }
-                                        }
-                                    }, 500);
-                                }
-                            }
-                        }
-                    }
-                }
+        setTimeout(function(){
+            clearInterval(urlParamParse.intervalParse)
+        }, (startTimeout * 5));
+    },
 
-                if(/(p|span|h1|h2|h3|h4|h5|h6)/i.test(element.tagName) === true){
-                    element.innerHTML = element.innerHTML.replace(urlParamParse.regexPattern, (match) => {
-                        let p = urlParamParse.paramValue(match);
-                        return p
-                    });
+    executeParse: () => {
+        // parse forms input
+        for(let ic = 1; ic <= 5; ic++){ // fix cause JS for some reason lost pattern expression
+            document.querySelectorAll('body input').forEach((match) => { 
+                if(urlParamParse.regexPattern.test(match.value)){
+                    match.value = urlParamParse.paramValue(match.value);
                 }
             });
-
-            // parse all head elements attributes
-            document.querySelectorAll('head *').forEach((element) => { 
+        }
+        
+        // parse all html elements attributes
+        document.querySelectorAll('body *').forEach((element) => { 
+            if(/(script|input)/i.test(element.tagName) === false){
                 for(let idx=0;idx < element.attributes.length; idx++){
                     if(element.attributes.item(idx)){
                         let attr = element.attributes.item(idx).name;
@@ -72,11 +47,48 @@ urlParamParse = {
                                 return p
                             });
                             element.setAttribute(attr, valueParsed);
+
+                            // hack to Vue link
+                            if(/(a)/i.test(element.tagName) === true){
+                                element.classList.add('overwrite-click');
+                                setTimeout(function() {
+                                    let linkSpanList = element.getElementsByTagName('span');
+                                    for(let sd=0;sd < linkSpanList.length; sd++){
+                                        if(linkSpanList.item(idx)){
+                                            let linkSpan = linkSpanList.item(idx);
+                                            linkSpan.classList.add('overwrite-click');
+                                        }
+                                    }
+                                }, 500);
+                            }
                         }
                     }
                 }
-            });
-        }, startTimeout);
+            }
+
+            if(/(p|span|h1|h2|h3|h4|h5|h6)/i.test(element.tagName) === true){
+                element.innerHTML = element.innerHTML.replace(urlParamParse.regexPattern, (match) => {
+                    let p = urlParamParse.paramValue(match);
+                    return p
+                });
+            }
+        });
+
+        // parse all head elements attributes
+        document.querySelectorAll('head *').forEach((element) => { 
+            for(let idx=0;idx < element.attributes.length; idx++){
+                if(element.attributes.item(idx)){
+                    let attr = element.attributes.item(idx).name;
+                    if(urlParamParse.regexPattern.test(element.getAttribute(attr))){
+                        let valueParsed = element.getAttribute(attr).replace(urlParamParse.regexPattern, (match) => {
+                            let p = urlParamParse.paramValue(match);
+                            return p
+                        });
+                        element.setAttribute(attr, valueParsed);
+                    }
+                }
+            }
+        });
     },
 
     paramValue: (match) => {
