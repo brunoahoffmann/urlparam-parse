@@ -67,10 +67,12 @@
             }
 
             if(/(p|span|h1|h2|h3|h4|h5|h6)/i.test(element.tagName) === true){
-                element.innerHTML = element.innerHTML.replace(urlParamParse.regexPattern, (match) => {
-                    let p = urlParamParse.paramValue(match);
-                    return p
-                });
+                if(urlParamParse.regexPattern.test(element.innerHTML)){
+                    element.innerHTML = element.innerHTML.replace(urlParamParse.regexPattern, (match) => {
+                        let p = urlParamParse.paramValue(match);
+                        return p
+                    });
+                }
             }
         });
 
